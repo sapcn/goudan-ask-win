@@ -26,7 +26,7 @@ def _screen_size() -> tuple[int, int]:
 
 
 class Panel:
-    """浮窗单例。GUI 逻辑经 evaluate_js 驱动页面里的 xiaoerStart/xiaoerRefresh。"""
+    """浮窗单例。GUI 逻辑经 evaluate_js 驱动页面里的 goudanStart/goudanRefresh。"""
 
     def __init__(self, cfg: Config, base_url: str, on_recapture=None):
         self._cfg = cfg
@@ -111,11 +111,11 @@ class Panel:
 
     def _push(self, ctx: dict, mode: str) -> None:
         payload = json.dumps(ctx, ensure_ascii=False)
-        entry = "window.xiaoerRefresh" if self._ready.is_set() else "window.xiaoerStart"
+        entry = "window.goudanRefresh" if self._ready.is_set() else "window.goudanStart"
         # 注入 ctx → 快路径（原版 refreshContext：只送划选词，几十字节）
         js = (
-            f"window.XIAOER_CTX = {payload};"
-            f"window.__XIAOER_REFRESH_MODE = {json.dumps(mode)};"
+            f"window.GOUDAN_CTX = {payload};"
+            f"window.__GOUDAN_REFRESH_MODE = {json.dumps(mode)};"
             f"if (typeof {entry} === 'function') {entry}();"
         )
         try:

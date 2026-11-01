@@ -1,5 +1,5 @@
 // 狗蛋问问 Windows 版 — WebView front-end（GLM 版）
-// 注入：window.XIAOER_CTX（Python panel.py evaluate_js 注入）
+// 注入：window.GOUDAN_CTX（Python panel.py evaluate_js 注入）
 // 桥：window.pywebview.api（hide_window / recapture）
 //
 // 与 macOS 版的差别：
@@ -22,7 +22,7 @@ const $lookupTerm= document.getElementById("lookup-term");
 const $followBar = document.getElementById("followup-bar");
 const $btnFollow = document.getElementById("btn-followup");
 
-// 这些在 xiaoerStart() 里赋值（等 Python 注入完 ctx 再启动）
+// 这些在 goudanStart() 里赋值（等 Python 注入完 ctx 再启动）
 let ctx = null;
 let isLookupMode = false;
 let USER_NAME = "朋友"; // prompts.js 默认称呼，config 拉到后覆盖
@@ -34,7 +34,7 @@ const history = []; // [{ role: 'user'|'assistant', text: '...' }]
 fetch("/api/config").then((r) => r.json()).then((c) => {
   if (c && c.user_name) {
     USER_NAME = c.user_name;
-    window.XiaoerPrompts.setUser(USER_NAME);
+    window.GoudanPrompts.setUser(USER_NAME);
   }
 }).catch(() => {});
 
@@ -64,7 +64,7 @@ $ctxTog.addEventListener("click", () => {
 
 // ── system instruction（提示词在 prompts.js，UMD 共用）─────────────
 function buildSystemInstruction(searchEnabled) {
-  return window.XiaoerPrompts.buildSystemInstruction(ctx, isLookupMode, searchEnabled);
+  return window.GoudanPrompts.buildSystemInstruction(ctx, isLookupMode, searchEnabled);
 }
 
 // ── 构造当前轮 user content（GLM OpenAI 多模态格式）────────────────
@@ -115,7 +115,7 @@ function renderMd(el, text) {
 
 // ── 什么时候该联网搜（规则在 search-policy.js）─────────────────────
 function shouldUseWebSearch(question) {
-  return window.XiaoerSearchPolicy.shouldUseGoogleSearch(question, { lookupMode: isLookupMode });
+  return window.GoudanSearchPolicy.shouldUseGoogleSearch(question, { lookupMode: isLookupMode });
 }
 
 // ── 调 GLM streaming（经本地中继 /api/llm，同源零 CORS）─────────────
@@ -265,8 +265,8 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ── 启动入口（Python 注入 ctx 后调用 / 调试模式自启）─────────────
-window.xiaoerStart = function() {
-  ctx = window.XIAOER_CTX || {
+window.goudanStart = function() {
+  ctx = window.GOUDAN_CTX || {
     app: "调试模式", title: "", mode: "none",
     selection: "", text: "", image_base64: "", url: "",
   };
@@ -286,12 +286,12 @@ window.xiaoerStart = function() {
   }
 };
 
-// ── 刷新入口（Python 注入新 XIAOER_CTX + __XIAOER_REFRESH_MODE 后调）─
+// ── 刷新入口（Python 注入新 GOUDAN_CTX + __GOUDAN_REFRESH_MODE 后调）─
 // mode = "normal" → auto-watch / 热键：插分隔条、可能自动问
 // mode = "silent" → 发送前重抓：只更新 ctx，resolve 等待中的 Promise
-window.xiaoerRefresh = function() {
-  const mode = window.__XIAOER_REFRESH_MODE || "normal";
-  ctx = window.XIAOER_CTX || ctx;
+window.goudanRefresh = function() {
+  const mode = window.__GOUDAN_REFRESH_MODE || "normal";
+  ctx = window.GOUDAN_CTX || ctx;
   initContext();
 
   if (mode === "silent") {
@@ -304,9 +304,9 @@ window.xiaoerRefresh = function() {
         browser: "WEB", screenshot: "SHOT", file: "FILE", none: "--",
       })[ctx.mode] || String(ctx.mode || "--").toUpperCase();
     }, 1800);
-    if (window.__xiaoerRecaptureResolve) {
-      const r = window.__xiaoerRecaptureResolve;
-      window.__xiaoerRecaptureResolve = null;
+    if (window.__goudanRecaptureResolve) {
+      const r = window.__goudanRecaptureResolve;
+      window.__goudanRecaptureResolve = null;
       r();
     }
     return;
@@ -329,17 +329,17 @@ window.xiaoerRefresh = function() {
 // ── 静默重抓：让 Python 现场抓新截图更新 ctx（pywebview 桥）────────
 function requestRecapture() {
   return new Promise((resolve) => {
-    window.__xiaoerRecaptureResolve = resolve;
+    window.__goudanRecaptureResolve = resolve;
     try {
-      window.pywebview.api.recapture();  // fire-and-forget；结果经 xiaoerRefresh 回来
+      window.pywebview.api.recapture();  // fire-and-forget；结果经 goudanRefresh 回来
     } catch (e) {
       // 不在 Python 宿主里跑（独立调试）→ 直接 resolve
-      window.__xiaoerRecaptureResolve = null;
+      window.__goudanRecaptureResolve = null;
       resolve();
     }
     setTimeout(() => {
-      if (window.__xiaoerRecaptureResolve === resolve) {
-        window.__xiaoerRecaptureResolve = null;
+      if (window.__goudanRecaptureResolve === resolve) {
+        window.__goudanRecaptureResolve = null;
         resolve();
       }
     }, 3000);
@@ -357,8 +357,8 @@ function requestRecapture() {
 })(0);
 
 // 调试模式：直接开 index.html（无 Python）时延迟自启
-if (!window.XIAOER_CTX) {
-  setTimeout(() => { if (!ctx) window.xiaoerStart(); }, 250);
+if (!window.GOUDAN_CTX) {
+  setTimeout(() => { if (!ctx) window.goudanStart(); }, 250);
 }
 
 // ── placeholder 轮播（让输入框「活」着）───────────────────────────

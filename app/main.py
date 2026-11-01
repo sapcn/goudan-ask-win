@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""xiaoer-ask Windows 版总入口。
+"""goudan-ask Windows 版总入口。
 
 用法：
   python -m app.main
@@ -29,7 +29,7 @@ _DRAG_SQ = 16
 _DOUBLE_CLICK = 0.5
 
 
-class XiaoerApp:
+class GoudanApp:
     """全部可变状态收在实例里（避免全局变量；状态只由鼠标回调线程写）。"""
 
     def __init__(self) -> None:
@@ -129,7 +129,7 @@ class XiaoerApp:
 
 def main() -> None:
     try:
-        app = XiaoerApp()
+        app = GoudanApp()
     except RuntimeError as e:
         print(f"[启动失败] {e}")
         raise SystemExit(1)

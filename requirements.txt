@@ -1,4 +1,4 @@
-# xiaoer-ask Windows deps (ASCII comments only: pip reads this file with GBK on zh-CN Windows)
+# goudan-ask Windows deps (ASCII comments only: pip reads this file with GBK on zh-CN Windows)
 pywebview>=5.0        # floating panel (WebView2, preinstalled on Win11)
 pywin32>=306          # clipboard / foreground window
 mss>=9.0              # fast screen capture

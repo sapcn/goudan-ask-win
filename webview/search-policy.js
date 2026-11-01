@@ -11,7 +11,7 @@
 (function (root, factory) {
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
-  root.XiaoerSearchPolicy = api;
+  root.GoudanSearchPolicy = api;
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   // 明确的搜索意图。按「字根」匹配而不是枚举整句，别再漏。
   const explicit = new RegExp([

@@ -2,7 +2,7 @@
 // 加载同一份，避免「改了 app.js 里的字符串但没人验证过效果」。
 //
 // Windows 版改动：称呼不再写死「Jane」——app.js 启动时从 /api/config 拉取
-// 用户名（.env 的 XIAOER_USER_NAME）后 setUser() 注入；代词统一「TA」。
+// 用户名（.env 的 GOUDAN_USER_NAME）后 setUser() 注入；代词统一「TA」。
 // 测试/离线场景未注入时用默认称呼，不影响单测。
 //
 // 产品要求（原版作者 2026-08-02 原话）：
@@ -19,7 +19,7 @@
 (function (root, factory) {
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
-  root.XiaoerPrompts = api;
+  root.GoudanPrompts = api;
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   // 当前用户称呼；app.js 从 Python 配置注入，离线/测试保持默认
   let userName = "朋友";

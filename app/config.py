@@ -49,8 +49,8 @@ def load_config() -> Config:
     env = _parse_env()
     # 环境变量再覆盖一层（方便临时改参数不改文件）
     merged = {**env, **{k: os.environ[k] for k in
-                        ("ZHIPU_API_KEY", "XIAOER_MODEL", "XIAOER_USER_NAME",
-                         "XIAOER_API_STYLE", "XIAOER_HOTKEY_MOD", "XIAOER_HOTKEY_KEY") if k in os.environ}}
+                        ("ZHIPU_API_KEY", "GOUDAN_MODEL", "GOUDAN_USER_NAME",
+                         "GOUDAN_API_STYLE", "GOUDAN_HOTKEY_MOD", "GOUDAN_HOTKEY_KEY") if k in os.environ}}
 
     api_key = merged.get("ZHIPU_API_KEY", "")
     if not api_key or api_key == "your-zhipu-api-key-here":
@@ -59,18 +59,18 @@ def load_config() -> Config:
             "填入智谱 API key（申请：https://bigmodel.cn/console/apikey）"
         )
 
-    api_style = merged.get("XIAOER_API_STYLE", "openai").lower()
+    api_style = merged.get("GOUDAN_API_STYLE", "openai").lower()
     if api_style not in ("openai", "anthropic"):
         api_style = "openai"
 
     return Config(
         api_key=api_key,
-        model=merged.get("XIAOER_MODEL", "glm-5v-turbo"),
-        user_name=merged.get("XIAOER_USER_NAME", "AI牧民"),
+        model=merged.get("GOUDAN_MODEL", "glm-5v-turbo"),
+        user_name=merged.get("GOUDAN_USER_NAME", "AI牧民"),
         api_style=api_style,
-        hotkey_mod=merged.get("XIAOER_HOTKEY_MOD", "alt").lower(),
-        hotkey_key=merged.get("XIAOER_HOTKEY_KEY", "q").lower(),
+        hotkey_mod=merged.get("GOUDAN_HOTKEY_MOD", "alt").lower(),
+        hotkey_key=merged.get("GOUDAN_HOTKEY_KEY", "q").lower(),
         panel_width=480,
         panel_height=620,
-        server_port=17321,  # xiaoer 谐音端口，冲突时可在 llm_proxy 里改
+        server_port=17321,  # 默认端口，冲突时可在 llm_proxy 里改
     )

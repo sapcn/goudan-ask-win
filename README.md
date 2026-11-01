@@ -93,11 +93,11 @@ python -m app.main
 | 变量 | 默认 | 说明 |
 |------|------|------|
 | `ZHIPU_API_KEY` | （必填） | 智谱 API key / Coding Plan token |
-| `XIAOER_MODEL` | `glm-5v-turbo` | 模型：`glm-5.3-flash`（Coding Plan）/ `glm-4v-flash`（免费）/ `glm-5v-turbo`（按量） |
-| `XIAOER_API_STYLE` | `openai` | `anthropic`（Coding Plan key）\| `openai`（按量 key） |
-| `XIAOER_USER_NAME` | `AI牧民` | AI 对你的称呼（写进提示词） |
-| `XIAOER_HOTKEY_MOD` | `alt` | 热键修饰键：alt / ctrl / shift / windows |
-| `XIAOER_HOTKEY_KEY` | `q` | 热键主键 |
+| `GOUDAN_MODEL` | `glm-5v-turbo` | 模型：`glm-5.3-flash`（Coding Plan）/ `glm-4v-flash`（免费）/ `glm-5v-turbo`（按量） |
+| `GOUDAN_API_STYLE` | `openai` | `anthropic`（Coding Plan key）\| `openai`（按量 key） |
+| `GOUDAN_USER_NAME` | `AI牧民` | AI 对你的称呼（写进提示词） |
+| `GOUDAN_HOTKEY_MOD` | `alt` | 热键修饰键：alt / ctrl / shift / windows |
+| `GOUDAN_HOTKEY_KEY` | `q` | 热键主键 |
 
 ## 🏗️ 架构
 
