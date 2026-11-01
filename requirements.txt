@@ -1,0 +1,8 @@
+# xiaoer-ask Windows deps (ASCII comments only: pip reads this file with GBK on zh-CN Windows)
+pywebview>=5.0        # floating panel (WebView2, preinstalled on Win11)
+pywin32>=306          # clipboard / foreground window
+mss>=9.0              # fast screen capture
+pynput>=1.7           # global mouse hook (drag / double-click)
+keyboard>=0.13.5      # global hotkey Alt+A + send Ctrl+C
+requests>=2.31        # GLM SSE streaming relay
+psutil>=5.9           # process name from foreground window handle
