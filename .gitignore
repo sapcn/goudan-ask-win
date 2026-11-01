@@ -1,0 +1,9 @@
+.env
+tmp/
+*.pyc
+__pycache__/
+*.png
+*.log
+Thumbs.db
+desktop.ini
+.DS_Store
